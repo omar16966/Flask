@@ -7,16 +7,20 @@ from datetime import datetime
 
 # Create a Flask Instance
 app = Flask(__name__)
-# add database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+# Add Database SQLITE DB
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+
+# Add Database MYSQL DB
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:16966@localhost/users"
+
 # Initialize The Database
 db = SQLAlchemy(app)
+
 # Secret Key
 app.config["SECRET_KEY"] = "16966"
 
+
 # Create Model
-
-
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
