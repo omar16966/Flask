@@ -1,13 +1,38 @@
-from flask import Flask, render_template, request
+import email
+from flask import Flask, render_template, flash
+from form import Form, UserForm
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 # Create a Flask Instance
 app = Flask(__name__)
+# add database
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+# Initialize The Database
+db = SQLAlchemy(app)
+# Secret Key
+app.config["SECRET_KEY"] = "16966"
+
+# Create Model
+
+
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    date_add = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Create String
+    def __repr__(self) -> str:
+        return "<Name %r>" % self.name
 
 # Create a Route Decorator
 
 
 @app.route("/")
 def index():
+    flash("Welcome To Our Website!")
     my_name = "Omar"
     stuff = "This is <strong>bold</strong> text"
     text = "This is TEXT For Test  "
@@ -15,9 +40,45 @@ def index():
     return render_template("index.html", my_name=my_name, stuff=stuff, text=text, favorite_pizza=favorite_pizza)
 
 # http://localhost:5000/user/name
+
+
+@app.route("/user/add", methods=["GET", "POST"])
+def add_user():
+    name = None
+    form = UserForm()
+    # Validate Form
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user is None:
+            user = Users(name=form.name.data, email=form.email.data)
+            db.session.add(user)
+            db.session.commit()
+        name = form.name.data
+        form.name.data = ''
+        form.email.data = ''
+        flash("User Added Successfully!")
+    our_users = Users.query.order_by(Users.date_add)
+    return render_template("add_user.html", form=form, name=name, our_users=our_users)
+
+
 @app.route("/user/<name>")
 def user(name):
     return render_template("user.html", name=name)
+
+# Create Form Page
+
+
+@app.route("/form", methods=["GET", "POST"])
+def form():
+    name = None
+    form = Form()
+    # Validate Form
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ""
+        flash("Form Submitted Successfully!")
+    return render_template("form.html", name=name, form=form)
+
 
 # Create Custom Pages
 # Invalid URL
@@ -26,6 +87,8 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 # Internal Server Error
+
+
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template("500.html"), 500

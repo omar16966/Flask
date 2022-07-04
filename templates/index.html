@@ -1,37 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <div>
-        <h1>Home, Hello {{my_name}}</h1>
-        <p>{{stuff | safe}} (safe)</p>
-        <p>{{stuff | striptags}}(striptags)</p>
-        <p>{{text | capitalize}}(capitalize)</p>
-        <p>{{text | lower}}(lower)</p>
-        <p>{{text | upper}}(upper)</p>
-        <p>{{text | title}}(title)</p>
-        <p>{{text | trim}}(trim)</p>
-        <h3>My Favorite Pizza is:</h3>
-        <ol>
-            {% for p in favorite_pizza%}
-                {% if p == 'Mushrooms' %}
-                    <li>{{p}} (Yami)</li>
-                {%else%}
-                    <li>{{p}}</li>
-                {% endif%}
-            {% endfor %}
-        </ol>
-        <br>
-        <p>{{favorite_pizza.0}}</p>
-        <p>{{favorite_pizza.1}}</p>
-        <p>{{favorite_pizza.2}}</p>
-        <p>{{favorite_pizza.3 * 6 + 22}}</p>
+{% extends "base.html" %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
-</body>
-</html>
+{% endfor %}
+<div>
+    <h1>Home, Hello {{my_name}}</h1>
+    <p>{{stuff | safe}} (safe)</p>
+    <p>{{stuff | striptags}}(striptags)</p>
+    <p>{{text | capitalize}}(capitalize)</p>
+    <p>{{text | lower}}(lower)</p>
+    <p>{{text | upper}}(upper)</p>
+    <p>{{text | title}}(title)</p>
+    <p>{{text | trim}}(trim)</p>
+    <h3>My Favorite Pizza is:</h3>
+    <ol>
+        {% for p in favorite_pizza%}
+            {% if p == 'Mushrooms' %}
+                <li>{{p}} (Yami)</li>
+            {%else%}
+                <li>{{p}}</li>
+            {% endif%}
+        {% endfor %}
+    </ol>
+    <br>
+    <p>{{favorite_pizza.0}}</p>
+    <p>{{favorite_pizza.1}}</p>
+    <p>{{favorite_pizza.2}}</p>
+    <p>{{favorite_pizza.3 * 6 + 22}}</p>
+</div>
+{% endblock %}
+

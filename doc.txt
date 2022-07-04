@@ -1,0 +1,65 @@
+-Jinja tag:{{}}
+	Example:
+		<h1>Hello {{ name }}</h1>
+---------------------------------------------------
+-jinja Filter:
+	safe			-> Convert tag in string
+	capitalize
+	lower
+	upper
+	title
+	trim		
+	striptags		-> Remove any tag from string
+		Example:
+			<h1>Hello {{ name | upper }}</h1>
+---------------------------------------------------
+-jinja For Loop:
+	{% for i  in list %}
+		statment
+	{% endfor %}
+---------------------------------------------------
+-jinja Block content:
+	{% block content %}
+	
+	{% endblock %}
+---------------------------------------------------
+-jinja Include:
+	{% include "page.html" %}
+
+
+
+WTF:
+# BooleanField
+# DateField
+# DateTimeField
+# DecimalField
+# FileField
+# HiddenField
+# MultipleField
+# FieldList
+# FloatField
+# FormField
+# IntegerField
+# PasswordField
+# RadioField
+# SelectField
+# SelectMultipleField
+# SubmitField
+# StringField
+# TextAreaField
+
+## Validators
+# DataRequired
+# Email
+# EqualTo
+# InputRequired
+# IPAddress
+# Length
+# MacAddress
+# NumberRange
+# Optional
+# Regexp
+# URL
+# UUID
+# AnyOf
+# NoneOf
