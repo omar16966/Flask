@@ -1,5 +1,7 @@
 {% extends "base.html" %} 
 {% block content %} 
+
+
     {% for message in get_flashed_messages() %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ message }}
@@ -14,23 +16,37 @@
 
 <h1>Add Blog Post</h1>
 <br />
+{% if  current_user.is_authenticated %}
 <div class="shadow p-3 mb-5 bg-body rounded">
-<form action="" method="POST">
-    {{form.hidden_tag()}} 
-
-    {{form.title.label(class="form-label")}}
-    {{form.title(class="form-control")}} 
-
-    {{form.author.label(class="form-label")}}
-    {{form.author(class="form-control")}}
+    <form action="" method="POST">
+        {{form.hidden_tag()}} 
     
-    {{form.slug.label(class="form-label")}}
-    {{form.slug(class="form-control")}}
+        {{form.title.label(class="form-label")}}
+        {{form.title(class="form-control")}} 
     
-    {{form.content.label(class="form-label")}}
-    {{form.content(class="form-control", rows="5")}}
-    <br />
-    {{form.submit(class="btn btn-secondary")}}
-</form>
+        {{form.slug.label(class="form-label")}}
+        {{form.slug(class="form-control")}}
+        
+        {{form.content.label(class="form-label")}}
+        {{form.content(class="form-control", rows="5")}}
+        <br />
+        {{form.submit(class="btn btn-secondary")}}
+    </form>
+    <!-- Add Ckeditor -->
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }}
+    </div>
+{% else %}
+<div class="card text-center">
+    <div class="card-header">
+        <strong>Must by logged in...</strong> 
+    </div>
+    <div class="card-body">
+        <p class="card-text">Sorry, You must logged in to access this page.</p>
+        <a href="{{url_for('login')}}" class="btn btn-primary">Login</a>
+    </div>
 </div>
+
+{% endif %}
+
 {% endblock %}

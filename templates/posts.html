@@ -16,9 +16,16 @@
 <br>
 <article class="blog-post">
     {% for post in  posts %}
-    <h3 class="blog-post-title mb-1">{{ post.title }}</h3>
-    <p class="blog-post-meta">{{ post.date_posted }} by <a href="#">{{ post.author }}</a></p>
-    <p>{{ post.content }}</p>
+    <h3 class="blog-post-title mb-1">
+        <a href="{{ url_for('post', id=post.id) }}">{{ post.title }}</a>
+    </h3>
+    <p>{{ post.content|safe }}</p>
+    <p class="blog-post-meta">{{ post.date_posted }} by <a href="#">{{ post.poster.name }}</a></p>
+    <a href="{{ url_for('post', id=post.id) }}" class='btn btn-outline-secondary btn-sm'>Read more...</a>
+{% if current_user.id == post.poster.id %}
+    <a href="{{ url_for('edit_post', id=post.id) }}" class='btn btn-outline-secondary btn-sm'>Edit Post</a>
+    <a href="{{ url_for('delete_post', id=post.id) }}" class='btn btn-outline-danger btn-sm'>Delete Post</a>
+    {% endif %}
     <hr>
     {% endfor %}
 </article>

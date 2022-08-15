@@ -12,50 +12,33 @@
         </div>
     {% endfor %} 
 
-{% if name %}
+{% if id == current_user.id %}
     <h1>Update User</h1>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Favorite Color</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for our_user in our_users %}
-            <tr>
-    
-                <td>{{ our_user.id }}</td>
-                <td>{{ our_user.name }}</td>
-                <td>{{ our_user.email }}</td>
-                <td>{{ our_user.favorite_color }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <form action="/dashboard" method="POST">
+            {{form.hidden_tag()}} 
+
+            {{form.name.label(class="form-label")}}
+            {{form.name(class="form-control", value=name_to_update.name)}} 
+            
+            {{form.username.label(class="form-label")}}
+            {{form.username(class="form-control", value=name_to_update.username)}} 
+
+            {{form.email.label(class="form-label")}}
+            {{form.email(class="form-control", value=name_to_update.email)}}
+            
+            {{form.favorite_color.label(class="form-label")}}
+            {{form.favorite_color(class="form-control", value=name_to_update.favorite_color)}}
+            <br />
+            {{form.submit(class="btn btn-secondary")}}
+            <a href="{{ url_for('delete_record', id=id) }}" class="btn btn-danger">Delete</a>
+        </form>
+    </div>
 {% else %}
-
-<h1>Update User</h1>
-<br />
+<br>
 <div class="shadow p-3 mb-5 bg-body rounded">
-<form action="/update/{{ name_to_update.id }}" method="POST">
-    {{form.hidden_tag()}} 
-
-    {{form.name.label(class="form-label")}}
-    {{form.name(class="form-control", value=name_to_update.name)}} 
-
-    {{form.email.label(class="form-label")}}
-    {{form.email(class="form-control", value=name_to_update.email)}}
-    
-    {{form.favorite_color.label(class="form-label")}}
-    {{form.favorite_color(class="form-control", value=name_to_update.favorite_color)}}
-    <br />
-    {{form.submit(class="btn btn-secondary")}}
-    <a href="{{ url_for('delete_record', id=id) }}" class="btn btn-danger">Delete</a>
-</form>
+    <h3 style="color: red;">Access Denied!</h3>
+    <h5>Sorry! You Cant Edit This User...</h5>
 </div>
-{% endif %} 
+{% endif %}
 {% endblock %}
